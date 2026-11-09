@@ -3,7 +3,7 @@ import re
 
 
 class Player:
-    """Représente un joueur d'échecs inscrit au club."""
+    """Refers to a chess player who is a registered member of the club."""
 
     def __init__(self, last_name, first_name, birth_date, national_id):
         self.last_name = last_name

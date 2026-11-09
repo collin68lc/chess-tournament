@@ -1,40 +1,44 @@
 class Match:
-    """score players"""
+    """result of the match between two players"""
+
+    WIN = 1
+    LOSS = 0
+    DRAW = 0.5
+
     def __init__(self, player1, player2):
-        self.player1 = player1
-        self.player2 = player2
-        self.score_player1 = 0
-        self.score_player2 = 0
+        self.match_result = ([player1, 0], [player2, 0])
 
     def set_winner(self, winner):
         """score depending on the winner"""
-        if winner == self.player1:
-            self.score_player1 = 1
-            self.score_player2 = 0
-        elif winner == self.player2:
-            self.score_player1 = 0
-            self.score_player2 = 1
+        if winner == self.match_result[0][0]:
+            self.match_result[0][1] = self.WIN
+            self.match_result[1][1] = self.LOSS
+        elif winner == self.match_result[1][0]:
+            self.match_result[0][1] = self.LOSS
+            self.match_result[1][1] = self.WIN
         elif winner is None:
-            self.score_player1 = 0.5
-            self.score_player2 = 0.5
+            self.match_result[0][1] = self.DRAW
+            self.match_result[1][1] = self.DRAW
         else:
-            raise ValueError("sélectionnez l'option pas de vainqueur")
+            raise ValueError("entrée le nom d'un des deux joueurs ou None")
 
     def __str__(self):
-        return f"{self.player1} : {self.score_player1} , {self.player2} : {self.score_player2}" 
+        """display score players"""
+        return (
+            f"{self.match_result[0][0]} : {self.match_result[0][1]}, "
+            f"{self.match_result[1][0]} : {self.match_result[1][1]}"
+        )
 
 
 if __name__ == "__main__":
     alice = "Alice"
     bob = "Bob"
-    m = Match(alice, bob)
-    m.set_winner("Alice")
-    #m.set_winner("Bob")
-    print(m.player1, m.score_player1, m.player2, m.score_player2)   # avant le résultat
-    #try:
-    #    m.set_winner("Charlie")
-    #except ValueError:
-     #   print("nom refusé")
-    
-    # print(m.player1, m.score_player1, m.player2, m.score_player2)   # après le résultat
-    
+    for winner in ("Alice", "Bob", None):
+        m = Match("Alice", "Bob")
+        m.set_winner(winner)
+        print(m)
+
+    try:
+        m.set_winner("Charles")
+    except ValueError as error:
+        print(error)
