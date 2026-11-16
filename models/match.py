@@ -1,3 +1,6 @@
+from models.player import Player
+
+
 class Match:
     """result of the match between two players"""
 
@@ -29,16 +32,27 @@ class Match:
             f"{self.match_result[1][0]} : {self.match_result[1][1]}"
         )
 
+    def to_dict(self):
+        """convert match result in dictionary"""
+        return {
+            "joueur1": 
+            {"identifiant national": self.match_result[0][0].national_id, "score": self.match_result[0][1]},
+            "joueur2": 
+            {"identifiant national": self.match_result[1][0].national_id, "score": self.match_result[1][1]}
+        }
+
 
 if __name__ == "__main__":
-    alice = "Alice"
-    bob = "Bob"
-    for winner in ("Alice", "Bob", None):
-        m = Match("Alice", "Bob")
+    p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
+    p2 = Player("Maurice", "Petit", "23/10/1996", "GF23456")
+    p3 = Player("Peter", "Lang", "16/08/2003", "DG23457")
+    for winner in (p1, p2, None):
+        m = Match(p1, p2)
         m.set_winner(winner)
         print(m)
 
     try:
-        m.set_winner("Charles")
+        m.set_winner(p3)
     except ValueError as error:
         print(error)
+    print(m.to_dict())
