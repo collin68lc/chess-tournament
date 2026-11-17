@@ -7,7 +7,7 @@ from pathlib import Path
 class Player:
     """Refers to a chess player who is a registered member of the club."""
 
-    FICHIER = Path("data/players.json")
+    DATA_FILE = Path("data/players.json")
 
     def __init__(self, last_name, first_name, birth_date, national_id, player_id=None):
         if not self.is_valid_national_id(national_id):
@@ -46,9 +46,9 @@ class Player:
     @classmethod
     def load_all(cls):
         """Return the list stored in the file, or an empty list."""
-        if not cls.FICHIER.exists():
+        if not cls.DATA_FILE.exists():
             return []
-        with open(cls.FICHIER, "r", encoding="utf-8") as f:
+        with open(cls.DATA_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def save(self):
@@ -60,10 +60,19 @@ class Player:
                 break
         else:
             liste.append(self.to_dict())
-        self.FICHIER.parent.mkdir(parents=True, exist_ok=True)
+        self.DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(self.FICHIER, "w", encoding="utf-8") as f:
+        with open(self.DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(liste, f, indent=4, ensure_ascii=False)
+
+    @classmethod
+    def get_by_id(cls, player_id):
+        """Find a player."""
+        liste = cls.load_all()
+        for item in liste:
+            if item["player id"] == player_id:
+                return cls.from_dict(item)
+        return None
 
 
 if __name__ == "__main__":
@@ -88,5 +97,7 @@ if __name__ == "__main__":
     # print(copie is p1, copie.national_id == p1.national_id)
     p = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
     p.save()
-    p.save()
-    print(len(Player.load_all()))
+    retrouve = Player.get_by_id(p.id)
+    print(retrouve)
+    print(retrouve is p, retrouve.id == p.id)
+    print(Player.get_by_id("n-importe-quoi"))
