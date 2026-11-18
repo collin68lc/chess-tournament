@@ -33,7 +33,7 @@ class Player:
             "Nom": self.last_name, "Prénom": self.first_name,
             "Date de naissance": self.birth_date, "Identifiant national": self.national_id,
             "player id": self.id
-            }
+        }
 
     @classmethod
     def from_dict(cls, data):
@@ -41,7 +41,7 @@ class Player:
         return cls(
             data["Nom"], data["Prénom"], data["Date de naissance"],
             data["Identifiant national"], data["player id"]
-            )
+        )
 
     @classmethod
     def load_all(cls):
@@ -67,37 +67,25 @@ class Player:
 
     @classmethod
     def get_by_id(cls, player_id):
-        """Find a player."""
+        """Return the player with this id, or None."""
         liste = cls.load_all()
         for item in liste:
             if item["player id"] == player_id:
                 return cls.from_dict(item)
         return None
 
+    @classmethod
+    def get_by_national_id(cls, national_id):
+        """Return the player with this national ID, or None."""
+        liste = cls.load_all()
+        for item in liste:
+            if item["Identifiant national"] == national_id:
+                return cls.from_dict(item)
+        return None
+
 
 if __name__ == "__main__":
-    # p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
-    # p2 = Player("Maurice", "Petit", "23/10/1996", "GF23456")
-    # p3 = Player("Peter", "Lang", "16/08/2003", "DG23457")
-    # print(p1, p2)
-
-    # try:
-    #     Player("Rust", "Ange", "12/08/1989", "J24")
-    # except ValueError as error:
-    #     print(error)
-    # try:
-    #     Player("Olaf", "Rufus", "30/12/2000", "ar67891")
-    # except ValueError as error:
-    #     print(error)
-
-    # data = p1.to_dict()
-    # print(data)
-    # copie = Player.from_dict(data)
-    # print(copie)
-    # print(copie is p1, copie.national_id == p1.national_id)
     p = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
     p.save()
-    retrouve = Player.get_by_id(p.id)
-    print(retrouve)
-    print(retrouve is p, retrouve.id == p.id)
-    print(Player.get_by_id("n-importe-quoi"))
+    print(Player.get_by_national_id("AB12345"))
+    print(Player.get_by_national_id("ZZ99999"))

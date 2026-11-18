@@ -1,5 +1,5 @@
 class PlayerView:
-    """Display the player menus and messages and read the user’s input."""
+    """Display the player menus and messages and read the user's input."""
 
     def show_menu_player(self):
         """Display the different choices in menu player."""
