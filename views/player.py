@@ -1,5 +1,16 @@
 class PlayerView:
-    """Ask the user for the data of a player."""
+    """Display the player menus and messages and read the user’s input."""
+
+    def show_menu_player(self):
+        """Display the different choices in menu player."""
+        print("1 - Créer un nouveau joueur")
+        #print("2 - Trouver un joueur")
+        print("4 - Retour")
+        return input("Votre choix : ")
+
+    def show_message(self, message):
+        """Display a message to the user."""
+        print(message)
 
     def ask_new_player(self):
         """Ask the player's data and return them in a dictionary."""
@@ -15,5 +26,5 @@ class PlayerView:
 
 if __name__ == "__main__":
     view = PlayerView()
-    player = view.ask_new_player()
+    player = view.show_message("Identifiant invalide : format attendu AB12345.")
     print(player)
