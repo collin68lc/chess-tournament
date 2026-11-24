@@ -3,11 +3,14 @@ from datetime import datetime
 class round:
     """set rounds"""
 
+    now = datetime.now()
+
     def __init__(self, name):
+
+        now = datetime.now()
         self.name = name
+        self.matches = []
+        self.start_time = now.strftime("%d/%m/%Y %H:%M")
+        self.end_time = None
 
-
-
-maintenant = datetime.now()
-print(maintenant)                          # 2026-11-24 10:48:12.345678
-print(maintenant.strftime("%d/%m/%Y %H:%M"))  # 24/11/2026 10:48
+    def finish(self):
