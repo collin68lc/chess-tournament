@@ -3,9 +3,9 @@ class MenuView:
 
     def show_main_menu(self):
         """Display the options and return what the user typed."""
-        print("1 - Gérer les tournois")
+        print("1 - Gérer les tournois(bientôt disponible)")
         print("2 - Gérer les joueurs")
-        print("3 - Afficher les rapports")
+        print("3 - Afficher les rapports(bientôt disponible)")
         print("4 - Quitter")
         return input("Votre choix : ")
 

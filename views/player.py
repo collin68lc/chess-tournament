@@ -4,7 +4,8 @@ class PlayerView:
     def show_menu_player(self):
         """Display the different choices in menu player."""
         print("1 - Créer un nouveau joueur")
-        #print("2 - Trouver un joueur")
+        print("2 - Trouver un joueur(bientôt disponible)")
+        print("3 - Supprimer un joueur(bientôt disponible)")
         print("4 - Retour")
         return input("Votre choix : ")
 
