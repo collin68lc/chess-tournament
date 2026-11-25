@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 import time
 from models.match import Match
@@ -9,18 +10,19 @@ class Round:
 
     TIME_FORMAT = "%d/%m/%Y %H:%M:%S"
 
-    def __init__(self, name):
+    def __init__(self, name, round_id=None, start_time=None, end_time=None):
         self.name = name
+        self.id = round_id or str(uuid.uuid4())
         self.matches = []
-        self.start_time = datetime.now().strftime(self.TIME_FORMAT)
-        self.end_time = None
+        self.start_time = start_time or datetime.now().strftime(self.TIME_FORMAT)
+        self.end_time = end_time
 
     def finish(self):
         """Set the end time of a round."""
         self.end_time = datetime.now().strftime(self.TIME_FORMAT)
 
     def add_match(self, match):
-        """Added match to the round."""
+        """Add a match to the round."""
         self.matches.append(match)
 
     def to_dict(self):
@@ -30,11 +32,21 @@ class Round:
             resultat.append(match.to_dict())
         return {
             "name": self.name,
+            "id": self.id,
             "start_time": self.start_time,
             "end_time": self.end_time,
             "matches": resultat
         }
 
+    @classmethod
+    def from_dict(cls, data):
+        """Create a round from a dictionary."""
+        round_party = cls(
+            data["name"], data["id"],
+            data["start_time"], data["end_time"],
+        )
+        return round_party
+       
 
 if __name__ == "__main__":
     p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
@@ -49,3 +61,5 @@ if __name__ == "__main__":
     r.finish()
     print("end_time:", r.end_time)
     print(r.to_dict())
+    copie = Round.from_dict(r.to_dict())
+    print(copie.id == r.id, copie.end_time == r.end_time)
