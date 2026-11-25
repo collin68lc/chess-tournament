@@ -33,12 +33,12 @@ class Match:
         )
 
     def to_dict(self):
-        """convert match result in dictionary"""
+        """Convert match result in dictionary."""
         return {
-            "joueur1":
-            {"identifiant national": self.match_result[0][0].national_id, "score": self.match_result[0][1]},
-            "joueur2":
-            {"identifiant national": self.match_result[1][0].national_id, "score": self.match_result[1][1]}
+            "player1":
+            {"national_id": self.match_result[0][0].national_id, "score": self.match_result[0][1]},
+            "player2":
+            {"national_id": self.match_result[1][0].national_id, "score": self.match_result[1][1]}
         }
 
 
