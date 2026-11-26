@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 import time
+import json
+from pathlib import Path
 from models.match import Match
 from models.player import Player
 
@@ -9,6 +11,7 @@ class Round:
     """A round of a tournament: a name, a list of matches, a start time and an end time."""
 
     TIME_FORMAT = "%d/%m/%Y %H:%M:%S"
+    DATA_FILE = Path("data/rounds.json")
 
     def __init__(self, name, round_id=None, start_time=None, end_time=None):
         self.name = name
@@ -50,6 +53,35 @@ class Round:
             round_party.add_match(match)
         return round_party
 
+    @classmethod
+    def load_all(cls):
+        """Return the list stored in the file, or an empty list."""
+        if not cls.DATA_FILE.exists():
+            return []
+        with open(cls.DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def save(self):
+        """Save the round to the JSON file."""
+        liste = self.load_all()
+        for index, item in enumerate(liste):
+            if item["id"] == self.id:
+                liste[index] = self.to_dict()
+                break
+        else:
+            liste.append(self.to_dict())
+        self.DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(self.DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(liste, f, indent=4, ensure_ascii=False)
+
+    @classmethod
+    def get_by_id(cls, round_id):
+        """Return the round with this id, or None."""
+        for item in cls.load_all():
+            if item["id"] == round_id:
+                return cls.from_dict(item)
+        return None
+
 
 if __name__ == "__main__":
     p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
@@ -64,9 +96,15 @@ if __name__ == "__main__":
     print("start_time:", r.start_time)
     time.sleep(2)
     r.finish()
+    r.save()
+    r.save()
     print("end_time:", r.end_time)
     print(r.to_dict())
     copie = Round.from_dict(r.to_dict())
     print(copie.id == r.id, copie.end_time == r.end_time)
     for match in copie.matches:
+        print(match)
+    retrouve = Round.get_by_id(r.id)
+    print(retrouve.end_time == r.end_time)
+    for match in retrouve.matches:
         print(match)
