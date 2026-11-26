@@ -45,12 +45,17 @@ class Round:
             data["name"], data["id"],
             data["start_time"], data["end_time"],
         )
+        for match_data in data["matches"]:
+            match = Match.from_dict(match_data)
+            round_party.add_match(match)
         return round_party
-       
+
 
 if __name__ == "__main__":
     p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
     p2 = Player("Petit", "Maurice", "24/08/1994", "AB56789")
+    p1.save()
+    p2.save()
     m = Match(p1, p2)
     r = Round("Round 1")
     r.add_match(m)
@@ -63,3 +68,5 @@ if __name__ == "__main__":
     print(r.to_dict())
     copie = Round.from_dict(r.to_dict())
     print(copie.id == r.id, copie.end_time == r.end_time)
+    for match in copie.matches:
+        print(match)

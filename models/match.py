@@ -41,18 +41,23 @@ class Match:
             {"national_id": self.match_result[1][0].national_id, "score": self.match_result[1][1]}
         }
 
+    @classmethod
+    def from_dict(cls, data):
+        """Create a match from a dictionary."""
+        player1 = Player.get_by_national_id(data["player1"]["national_id"])
+        player2 = Player.get_by_national_id(data["player2"]["national_id"])
+        new_match = cls(player1, player2)
+        new_match.match_result[0][1] = data["player1"]["score"]
+        new_match.match_result[1][1] = data["player2"]["score"]
+        return new_match
+
 
 if __name__ == "__main__":
     p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
-    p2 = Player("Maurice", "Petit", "23/10/1996", "GF23456")
-    p3 = Player("Peter", "Lang", "16/08/2003", "DG23457")
-    for winner in (p1, p2, None):
-        m = Match(p1, p2)
-        m.set_winner(winner)
-        print(m)
-
-    try:
-        m.set_winner(p3)
-    except ValueError as error:
-        print(error)
-    print(m.to_dict())
+    p2 = Player("Petit", "Maurice", "24/08/1994", "AB56789")
+    p1.save()
+    p2.save()
+    m = Match(p1, p2)
+    m.set_winner(p1)
+    copie = Match.from_dict(m.to_dict())
+    print(copie)
