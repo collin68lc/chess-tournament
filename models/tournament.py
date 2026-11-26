@@ -29,6 +29,21 @@ class Tournament:
         """Add a round to the tournament."""
         self.rounds.append(round_)
 
+    def to_dict(self):
+        """Convert the tournament to a dictionary."""
+        players_ids = []
+        for player in self.players:
+            players_ids.append(player.id)
+        rounds_data = []
+        for round_ in self.rounds:
+            rounds_data.append(round_.to_dict())
+        return {
+            "id": self.id, "name": self.name, "location": self.location,
+            "start_date": self.start_date, "end_date": self.end_date,
+            "number_of_rounds": self.number_of_rounds, "current_round_number": self.current_round_number,
+            "description": self.description, "players": players_ids, "rounds": rounds_data,
+        }
+
 
 if __name__ == "__main__":
     p1 = Player("Carlsen", "Magnus", "30/11/1990", "AB12345")
@@ -36,6 +51,7 @@ if __name__ == "__main__":
     t = Tournament("test", "Lyon", "26/11/2026", "27/11/2026", 1, "essai")
     t.add_player(p1)
     t.add_player(p2)
-    t.add_round(Round("round1"))
+    t.add_round(Round("Round 1"))
     print(len(t.players))
     print(len(t.rounds))
+    print(t.to_dict())
